@@ -19,11 +19,10 @@ func (receiver *DatabaseServiceProvider) Register(app foundation.Application) {
 func (receiver *DatabaseServiceProvider) Boot(app foundation.Application) {
 	kernel := database.Kernel{}
 	facades.Schema().Register(kernel.Migrations())
-	// facades.Seeder().Register(kernel.Seeders())
 	facades.Seeder().Register([]seeder.Seeder{
-		&seeders.DatabaseSeeder{},
 		&seeders.GameCaseSeeder{},
 		&seeders.GameItemSeeder{},
 		&seeders.StatsSeeder{},
+		&seeders.UnboxSeeder{},
 	})
 }

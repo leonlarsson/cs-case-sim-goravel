@@ -18,4 +18,7 @@ func Api() {
 
 	statsController := controllers.NewStatsController()
 	facades.Route().Get("/stats", statsController.Index)
+
+	unboxController := controllers.NewUnboxController()
+	facades.Route().Get("/unboxes", unboxController.Index)
 }
