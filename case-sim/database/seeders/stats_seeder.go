@@ -1,6 +1,7 @@
 package seeders
 
 import (
+	"fmt"
 	"goravel/app/models"
 
 	"github.com/goravel/framework/facades"
@@ -16,8 +17,25 @@ func (s *StatsSeeder) Signature() string {
 
 // Run executes the seeder logic.
 func (s *StatsSeeder) Run() error {
-	return facades.Orm().Query().Create([]models.Stats{
-		{Name: "total_unboxes_all", Value: 0},
-		{Name: "total_unboxes_coverts", Value: 0},
-	})
+	stats := []models.Stats{
+		{Name: "total_unboxes_all"},
+		{Name: "total_unboxes_coverts"},
+	}
+
+	for _, stat := range stats {
+		err := facades.Orm().Query().UpdateOrCreate(
+			&stat,
+			models.Stats{Name: stat.Name},
+			models.Stats{
+				Name:  stat.Name,
+				Value: stat.Value,
+			},
+		)
+
+		if err != nil {
+			return fmt.Errorf("failed to upsert stat %s: %w", stat.Name, err)
+		}
+	}
+
+	return nil
 }

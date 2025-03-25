@@ -17,10 +17,12 @@ func (r *M20250325172610CreateStatsTable) Signature() string {
 func (r *M20250325172610CreateStatsTable) Up() error {
 	if !facades.Schema().HasTable("stats") {
 		return facades.Schema().Create("stats", func(table schema.Blueprint) {
+			table.ID()
 			table.String("name")
 			table.Integer("value").Default(0)
+			table.Timestamps()
 
-			table.Primary("name")
+			table.Unique("name")
 		})
 	}
 
